@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "goals": [
+    {
+      "id": "swe-intern",
+      "slug": "software-engineer-intern",
+      "title": "SWE Intern",
+      "status": "seed-preview",
+      "nodes": []
+    },
+    {
+      "id": "apm-intern",
+      "slug": "apm",
+      "title": "APM / PM Intern",
+      "status": "seed-preview",
+      "nodes": []
+    }
+  ]
+}

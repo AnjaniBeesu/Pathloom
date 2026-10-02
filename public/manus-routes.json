@@ -1,0 +1,24 @@
+{
+  "routes": [
+    { "path": "/", "title": "Pathloom — know what to do next" },
+    { "path": "/how-it-works", "title": "How Pathloom works" },
+    { "path": "/roadmaps", "title": "Career roadmaps" },
+    { "path": "/roadmaps/software-engineer-intern", "title": "Software engineer intern roadmap" },
+    { "path": "/roadmaps/apm", "title": "APM intern roadmap" },
+    { "path": "/about", "title": "About Pathloom" },
+    { "path": "/contact", "title": "Contact Pathloom" },
+    { "path": "/changelog", "title": "Pathloom changelog" },
+    { "path": "/faq", "title": "Pathloom FAQ" },
+    { "path": "/app", "title": "Pathloom dashboard" },
+    { "path": "/app/tree", "title": "Pathloom skill tree" },
+    { "path": "/app/settings", "title": "Pathloom settings" },
+    { "path": "/onboarding", "title": "Pathloom onboarding" },
+    { "path": "/u/:username", "title": "Pathloom public profile" },
+    { "path": "/privacy-policy", "title": "Privacy policy" },
+    { "path": "/terms-and-conditions", "title": "Terms and conditions" },
+    { "path": "/cookie-policy", "title": "Cookie policy" },
+    { "path": "/acceptable-use", "title": "Acceptable use" },
+    { "path": "/disclaimer", "title": "Disclaimer" },
+    { "path": "/data-deletion", "title": "Data deletion" }
+  ]
+}
