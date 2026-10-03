@@ -1,6 +1,6 @@
 # Pathloom setup guide
 
-Phase 1 does not require external accounts. The steps below are the exact setup path for the integrations planned in later phases.
+Phase 2 is implemented and runs with a browser-local fallback when credentials are absent. The steps below enable real GitHub OAuth and Supabase persistence; do not commit secrets.
 
 ## 1. GitHub OAuth App
 
@@ -22,7 +22,7 @@ Use only the minimum requested permissions: `read:user` and public repository ac
 2. Select the free plan, choose a nearby region, and save the database password in a password manager.
 3. In **Project Settings → API**, copy the Project URL to `NEXT_PUBLIC_SUPABASE_URL` and the anon public key to `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 4. Add the service-role key only to the server environment as `SUPABASE_SERVICE_ROLE_KEY`; never expose it in client code.
-5. Open **SQL Editor → New query** and run the versioned migration in `supabase/migrations/001_initial.sql` when Phase 2 adds it.
+5. Open **SQL Editor → New query** and run the versioned migration in `supabase/migrations/001_initial.sql`.
 6. Confirm RLS is enabled on every application table. Public profiles must be exposed only through a restricted view.
 
 ## 3. Local secrets
@@ -44,4 +44,4 @@ Copy `.env.example` to `.env.local`, fill only the variables required for the ph
 4. Generate a separate random value and add the exact same value to Vercel as `CRON_SECRET`.
 5. The future `.github/workflows/sync.yml` will send `x-cron-secret` to `POST /api/cron/sync` every six hours.
 
-These later integrations are not wired in Phase 1.
+Phase 2 routes are wired now. Without OAuth or Supabase environment values, onboarding, the dashboard, tree completion, settings, and JSON export still work locally through the first-party `pathloom-phase2-state` browser key. Phase 3 will add automated GitHub/Codeforces/LeetCode adapters, activity snapshots, rules-engine calculations, and scheduled sync.

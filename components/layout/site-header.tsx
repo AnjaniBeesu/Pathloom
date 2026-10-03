@@ -22,7 +22,7 @@ export function SiteHeader() {
         </nav>
         <div className="hidden items-center gap-2 md:flex">
           <ThemeToggle />
-          <Link href="/app" className="button-quiet min-h-9 px-4 text-[13px]">Sign in</Link>
+          <a href="/api/auth/signin/github?callbackUrl=/app" className="button-quiet min-h-9 px-4 text-[13px]">Sign in</a>
           <Link href="/onboarding" className="button-primary min-h-9 px-4 text-[13px]">Get started <ArrowUpRight size={14} strokeWidth={1.7} /></Link>
         </div>
         <div className="flex items-center gap-2 md:hidden">
@@ -32,7 +32,7 @@ export function SiteHeader() {
           </button>
         </div>
       </div>
-      {open && <div className="border-t border-line bg-canvas px-5 pb-6 pt-4 md:hidden"><nav className="shell flex flex-col gap-1" aria-label="Mobile navigation">{publicNav.map((item) => <Link key={item.href} href={item.href as Route} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-[15px] text-muted hover:bg-muted-surface hover:text-ink">{item.label}</Link>)}<div className="mt-3 grid grid-cols-2 gap-2"><Link href="/app" onClick={() => setOpen(false)} className="button-quiet">Sign in</Link><Link href="/onboarding" onClick={() => setOpen(false)} className="button-primary">Get started</Link></div></nav></div>}
+          {open && <div className="border-t border-line bg-canvas px-5 pb-6 pt-4 md:hidden"><nav className="shell flex flex-col gap-1" aria-label="Mobile navigation">{publicNav.map((item) => <Link key={item.href} href={item.href as Route} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-[15px] text-muted hover:bg-muted-surface hover:text-ink">{item.label}</Link>)}<div className="mt-3 grid grid-cols-2 gap-2"><a href="/api/auth/signin/github?callbackUrl=/app" onClick={() => setOpen(false)} className="button-quiet">Sign in</a><Link href="/onboarding" onClick={() => setOpen(false)} className="button-primary">Get started</Link></div></nav></div>}
     </header>
   );
 }
