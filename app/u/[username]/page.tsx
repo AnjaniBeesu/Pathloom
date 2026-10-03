@@ -1,4 +1,15 @@
 import type { Metadata } from "next";
-import { EmptyState } from "@/components/marketing/empty-state";
-export const metadata: Metadata = { title: "Public profile", robots: { index: false, follow: false } };
-export default async function ProfilePage({ params }: { params: Promise<{ username: string }> }) { const { username } = await params; return <EmptyState eyebrow={`Profile / ${username}`} title="This profile is not public yet." copy="Pathloom profiles are private by default. When a member chooses to share, this route will show a progress card and a small, honest view of their path." href="/privacy-policy" label="Read the privacy policy" />; }
+import { notFound } from "next/navigation";
+import { PublicProfileCard } from "@/components/profile/public-profile-card";
+import { decodePublicPayload, publicProfileDescription } from "@/lib/public-profile";
+import { site } from "@/lib/content";
+
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ username: string }>; searchParams: Promise<{ share?: string }> }): Promise<Metadata> {
+  const { username } = await params; const query = await searchParams; const profile = decodePublicPayload(query.share, username); if (!profile) return { title: "Private profile", description: "This Pathloom profile is private or its share link has expired.", robots: { index: false, follow: false } };
+  const description = publicProfileDescription(profile); const path = `/u/${encodeURIComponent(profile.username)}?share=${encodeURIComponent(query.share ?? "")}`;
+  return { title: `${profile.displayName || `@${profile.username}`} · Pathloom`, description, alternates: { canonical: path }, openGraph: { type: "profile", title: `${profile.displayName || `@${profile.username}`} · Pathloom`, description, url: `${site.url}${path}`, images: [{ url: `/u/${encodeURIComponent(profile.username)}/opengraph-image`, width: 1200, height: 630, alt: `${profile.displayName || profile.username}'s Pathloom progress` }] }, twitter: { card: "summary_large_image", title: `${profile.displayName || `@${profile.username}`} · Pathloom`, description, images: [`/u/${encodeURIComponent(profile.username)}/opengraph-image`] }, robots: { index: true, follow: true } };
+}
+
+export default async function ProfilePage({ params, searchParams }: { params: Promise<{ username: string }>; searchParams: Promise<{ share?: string }> }) {
+  const { username } = await params; const query = await searchParams; const profile = decodePublicPayload(query.share, username); if (!profile) notFound(); return <PublicProfileCard profile={profile} />;
+}

@@ -23,7 +23,7 @@ Open `http://localhost:3000`.
 
 ## Repository setup
 
-See [PHASE2.md](./PHASE2.md) for the Phase 2 feature set and [PHASE3.md](./PHASE3.md) for the evidence loop. See [SETUP.md](./SETUP.md) for OAuth, database, and scheduled-sync setup. See [SEO_LAUNCH.md](./SEO_LAUNCH.md) for launch distribution steps.
+See [PHASE2.md](./PHASE2.md) for the Phase 2 feature set, [PHASE3.md](./PHASE3.md) for the evidence loop, and [PHASE4.md](./PHASE4.md) for public profiles and sharing. See [SETUP.md](./SETUP.md) for OAuth, database, scheduled-sync, and public-profile setup. See [SEO_LAUNCH.md](./SEO_LAUNCH.md) for launch distribution steps.
 
 ## Legal templates
 
@@ -34,7 +34,7 @@ The legal pages contain marked placeholders for `{{CONTACT_EMAIL}}`, `{{OWNER_NA
 1. Phase 1 — public shell, design system, consent, legal, SEO foundation.
 2. Phase 2 — Auth.js, goal picker, Supabase schema, onboarding, real skill tree, manual progress. **Complete.**
 3. Phase 3 — GitHub/Codeforces/LeetCode adapters, automated progress rules, activity snapshots, and scheduled sync. **Complete.**
-4. Phase 4 — public profiles, next/og share card, share sheet, full SEO pages.
+4. Phase 4 — public profiles, generated OG share card, share sheet, and privacy-safe SEO metadata. **Complete.**
 5. Phase 5 — security, accessibility, Lighthouse tuning, docs, and production deployment.
 
 ## License

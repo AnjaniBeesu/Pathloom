@@ -54,3 +54,9 @@ Phase 2 routes are wired now. Without OAuth or Supabase environment values, onbo
 4. Keep the schedule disabled until the published health check is green. A local `POST /api/sync` is available from the dashboard through **Sync now** and does not require a scheduler.
 
 Phase 3 adapters are conservative: provider outages produce warnings, and sync evidence can complete a qualifying node but never downgrades a manual completion.
+
+## 7. Phase 4 public profiles
+
+Run `supabase/migrations/003_public_profiles.sql` after the Phase 3 migration when the authenticated Supabase write path is enabled. The current local-first Settings flow already supports opt-in portable share links without external credentials. Sharing is off by default and only includes display name, username, goal, deadline, completed node IDs, and a timestamp. Provider handles, snapshots, and private workspace data are excluded.
+
+Public profile pages are available at `/u/:username?share=...` for valid shared snapshots. They return a real not-found response when the payload is missing or invalid, and private profile URLs are not added to the sitemap.
