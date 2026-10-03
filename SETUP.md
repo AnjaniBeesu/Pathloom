@@ -44,4 +44,13 @@ Copy `.env.example` to `.env.local`, fill only the variables required for the ph
 4. Generate a separate random value and add the exact same value to Vercel as `CRON_SECRET`.
 5. The future `.github/workflows/sync.yml` will send `x-cron-secret` to `POST /api/cron/sync` every six hours.
 
-Phase 2 routes are wired now. Without OAuth or Supabase environment values, onboarding, the dashboard, tree completion, settings, and JSON export still work locally through the first-party `pathloom-phase2-state` browser key. Phase 3 will add automated GitHub/Codeforces/LeetCode adapters, activity snapshots, rules-engine calculations, and scheduled sync.
+Phase 2 routes are wired now. Without OAuth or Supabase environment values, onboarding, the dashboard, tree completion, settings, and JSON export still work locally through the first-party `pathloom-phase2-state` browser key.
+
+## 6. Phase 3 sync and scheduler
+
+1. Run `supabase/migrations/002_sync.sql` after `001_initial.sql` to create `sync_targets` and `sync_runs`.
+2. Store only public provider handles in the `accounts_json` column. Provider reads are server-side and use public endpoints; no provider password or private token is accepted.
+3. After a successful published deployment, create a UTC Heartbeat schedule targeting `POST /api/scheduled/sync`. The handler validates the platform `app_session_id` cron ticket and resolves its `taskUid` before reading a `sync_targets` row.
+4. Keep the schedule disabled until the published health check is green. A local `POST /api/sync` is available from the dashboard through **Sync now** and does not require a scheduler.
+
+Phase 3 adapters are conservative: provider outages produce warnings, and sync evidence can complete a qualifying node but never downgrades a manual completion.

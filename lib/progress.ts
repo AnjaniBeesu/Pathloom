@@ -1,42 +1,12 @@
 import { nodesForGoal, type GoalId, type NodeStatus, type SkillNodeDefinition } from "@/lib/phase2-data";
 
-export type NodeProgress = { status: NodeStatus; proofUrl?: string; completedAt?: string };
+export type NodeProgress = { status: NodeStatus; proofUrl?: string; completedAt?: string; source?: "manual" | "sync" };
 export type ProgressMap = Record<string, NodeProgress>;
 
-export function isUnlocked(node: SkillNodeDefinition, progress: ProgressMap) {
-  return node.parentIds.every((parentId) => progress[parentId]?.status === "complete");
-}
-
-export function normalizeProgress(goalId: GoalId, progress: ProgressMap): ProgressMap {
-  return Object.fromEntries(nodesForGoal(goalId).map((node) => {
-    const existing = progress[node.id] ?? { status: "locked" as NodeStatus };
-    if (existing.status === "complete") return [node.id, existing];
-    return [node.id, { ...existing, status: isUnlocked(node, progress) ? "available" : "locked" }];
-  }));
-}
-
-export function getProgressPercent(goalId: GoalId, progress: ProgressMap) {
-  const nodes = nodesForGoal(goalId);
-  if (!nodes.length) return 0;
-  return Math.round((nodes.filter((node) => progress[node.id]?.status === "complete").length / nodes.length) * 100);
-}
-
-export function getCompletedCount(goalId: GoalId, progress: ProgressMap) {
-  return nodesForGoal(goalId).filter((node) => progress[node.id]?.status === "complete").length;
-}
-
-export function getNextNodes(goalId: GoalId, progress: ProgressMap) {
-  return nodesForGoal(goalId).filter((node) => progress[node.id]?.status === "available");
-}
-
-export function getGaps(goalId: GoalId, progress: ProgressMap) {
-  return nodesForGoal(goalId).filter((node) => progress[node.id]?.status !== "complete").slice(0, 3).map((node) => ({ title: node.title, reason: node.parentIds.length ? `Complete the step before ${node.title.toLowerCase()} to unlock this node.` : `Start with ${node.title.toLowerCase()} to establish your base.` }));
-}
-
-export function getWeeklyPlan(goalId: GoalId, progress: ProgressMap, deadline?: string) {
-  const next = getNextNodes(goalId, progress);
-  const focus = next[0] ?? nodesForGoal(goalId).find((node) => progress[node.id]?.status !== "complete");
-  const deadlineText = deadline ? ` before ${new Intl.DateTimeFormat("en", { month: "short", day: "numeric" }).format(new Date(`${deadline}T12:00:00`))}` : "";
-  if (!focus) return { title: "Keep the rhythm", items: ["Review your completed work", "Write down one next experiment", "Share a progress note with someone you trust"] };
-  return { title: `Make progress on ${focus.title}${deadlineText}`, items: [`Spend ${Math.min(focus.estimatedHours, 6)} focused hours on the node`, `Save one proof note or link for ${focus.title.toLowerCase()}`, `Review the next unlock at the end of the week`] };
-}
+export function isUnlocked(node: SkillNodeDefinition, progress: ProgressMap) { return node.parentIds.every((parentId) => progress[parentId]?.status === "complete"); }
+export function normalizeProgress(goalId: GoalId, progress: ProgressMap): ProgressMap { return Object.fromEntries(nodesForGoal(goalId).map((node) => { const existing = progress[node.id] ?? { status: "locked" as NodeStatus }; if (existing.status === "complete") return [node.id, existing]; return [node.id, { ...existing, status: isUnlocked(node, progress) ? "available" : "locked" }]; })); }
+export function getProgressPercent(goalId: GoalId, progress: ProgressMap) { const nodes = nodesForGoal(goalId); return nodes.length ? Math.round((nodes.filter((node) => progress[node.id]?.status === "complete").length / nodes.length) * 100) : 0; }
+export function getCompletedCount(goalId: GoalId, progress: ProgressMap) { return nodesForGoal(goalId).filter((node) => progress[node.id]?.status === "complete").length; }
+export function getNextNodes(goalId: GoalId, progress: ProgressMap) { return nodesForGoal(goalId).filter((node) => progress[node.id]?.status === "available"); }
+export function getGaps(goalId: GoalId, progress: ProgressMap) { return nodesForGoal(goalId).filter((node) => progress[node.id]?.status !== "complete").slice(0, 3).map((node) => ({ title: node.title, reason: node.parentIds.length ? `Complete the step before ${node.title.toLowerCase()} to unlock this node.` : `Start with ${node.title.toLowerCase()} to establish your base.` })); }
+export function getWeeklyPlan(goalId: GoalId, progress: ProgressMap, deadline?: string) { const next = getNextNodes(goalId, progress); const focus = next[0] ?? nodesForGoal(goalId).find((node) => progress[node.id]?.status !== "complete"); const deadlineText = deadline ? ` before ${new Intl.DateTimeFormat("en", { month: "short", day: "numeric" }).format(new Date(`${deadline}T12:00:00`))}` : ""; if (!focus) return { title: "Keep the rhythm", items: ["Review your completed work", "Write down one next experiment", "Share a progress note with someone you trust"] }; return { title: `Make progress on ${focus.title}${deadlineText}`, items: [`Spend ${Math.min(focus.estimatedHours, 6)} focused hours on the node`, `Save one proof note or link for ${focus.title.toLowerCase()}`, `Review the next unlock at the end of the week`] }; }

@@ -51,3 +51,11 @@
 - Start the development server on configured port 3000 and verify HTTP 200 for `/`, `/how-it-works`, `/roadmaps`, `/faq`, all legal pages, `/manus-routes.json`, `/sitemap.xml`, and `/robots.txt`.
 - Inspect desktop and mobile Preview for hierarchy, overflow, focus visibility, responsive navigation, tree preview legibility, footer layout, and cookie-banner placement.
 - Verify system theme behavior, no-flash loading, cookie persistence/reopen behavior, no analytics before consent, valid route manifest, representative metadata/JSON-LD, visible legal placeholders, and no committed secrets or user data.
+
+## Phase 3 — provider evidence loop
+
+- Add defensive server-side adapters for public GitHub profile/events, Codeforces rating/submissions, and LeetCode public GraphQL stats; bound provider requests with timeouts, normalize results into provider snapshots, and surface provider-specific warnings instead of failing the whole sync.
+- Add an on-demand `POST /api/sync` route and dashboard Activity sync panel. The panel must show connected provider handles, sync status, last-sync time, warning text, qualified evidence-rule count, and a disabled Sync now action when no public handle is configured.
+- Add conservative evidence rules for the SWE intern and APM / PM intern goals. A qualifying provider threshold may complete a node, but sync must never downgrade a previously completed or manually completed node; persist the latest snapshots, evidence, warnings, and five most recent runs in the first-party browser state.
+- Add Supabase `sync_targets` and `sync_runs` tables with RLS in `supabase/migrations/002_sync.sql`, and add `POST /api/scheduled/sync` with platform `app_session_id` JWT verification, scheduled identity lookup, task-target lookup by returned `taskUid`, idempotent retry handling, and a successful accepted no-op when Supabase or a target is not configured.
+- Update Phase 3 documentation and setup instructions, keep `/manus-routes.json` limited to page routes, and verify TypeScript, lint, production build, provider sync behavior, scheduled-auth rejection, key route responses, and desktop/mobile dashboard rendering.
