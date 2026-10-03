@@ -12,7 +12,8 @@ export async function verifyScheduledRequest(request: Request) {
   const [header, payload, signature] = parts;
   const expected = createHmac("sha256", secret).update(`${header}.${payload}`).digest("base64url");
   if (expected.length !== signature.length || !timingSafeEqual(Buffer.from(expected), Buffer.from(signature))) return { ok: false as const, reason: "Invalid scheduled token signature" };
-  const claims = decode(payload);
+  let claims: Record<string, unknown>;
+  try { claims = decode(payload); } catch { return { ok: false as const, reason: "Malformed scheduled token claims" }; }
   if (claims.appId !== projectId || typeof claims.exp !== "number" || claims.exp <= Math.floor(Date.now() / 1000) || typeof claims.openId !== "string" || !claims.openId.startsWith("cron_")) return { ok: false as const, reason: "Invalid scheduled token claims" };
   const apiUrl = process.env.MANUS_OAUTH_API_URL;
   if (!apiUrl) return { ok: false as const, reason: "Missing scheduled identity service" };

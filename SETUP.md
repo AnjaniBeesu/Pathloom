@@ -60,3 +60,15 @@ Phase 3 adapters are conservative: provider outages produce warnings, and sync e
 Run `supabase/migrations/003_public_profiles.sql` after the Phase 3 migration when the authenticated Supabase write path is enabled. The current local-first Settings flow already supports opt-in portable share links without external credentials. Sharing is off by default and only includes display name, username, goal, deadline, completed node IDs, and a timestamp. Provider handles, snapshots, and private workspace data are excluded.
 
 Public profile pages are available at `/u/:username?share=...` for valid shared snapshots. They return a real not-found response when the payload is missing or invalid, and private profile URLs are not added to the sitemap.
+
+
+## 8. Phase 5 production deployment
+
+1. Set `NEXT_PUBLIC_SITE_URL` and `NEXTAUTH_URL` to the actual HTTPS production origin. Do not leave the example domain in a live environment.
+2. Run `pnpm check` before pushing a release. The root `Dockerfile` installs the pinned pnpm version from `pnpm-lock.yaml`, builds Next, and starts `pnpm start` on the platform-provided `PORT`.
+3. In the managed Webdev project, use the container deployment contract with health path `/health`. The health response is unauthenticated and returns `{ "ok": true, "service": "pathloom" }` with `Cache-Control: no-store`.
+4. Run `supabase/migrations/003_public_profiles.sql` after the earlier migrations. Keep the service-role key server-only and verify RLS policies before enabling durable public profiles.
+5. Configure production GitHub OAuth callback URL as `https://YOUR_DOMAIN/api/auth/callback/github`. The Auth.js cookies use `SameSite=None; Secure` when the public origin is HTTPS, which is required for embedded Preview and cross-site OAuth return flows.
+6. After the first successful deployment, verify `/health`, public SSR pages, `/robots.txt`, `/sitemap.xml`, `/api/auth/providers`, and a malformed private profile URL before enabling any recurring sync schedule.
+
+Phase 5 is complete in source and deployment contract. Production secrets, legal placeholders, migration execution, and search-engine ownership verification remain operator-owned launch actions.
