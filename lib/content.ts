@@ -1,9 +1,11 @@
 const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
+const publishedSiteUrl = "https://pathloom-qduvruaq.manus.space";
+const defaultSiteUrl = process.env.NODE_ENV === "production" ? publishedSiteUrl : "";
 
 export const site = {
   name: "Pathloom",
   description: "A living career skill-tree that turns your goal into a plan that moves with your work.",
-  url: configuredSiteUrl && /^https?:\/\//.test(configuredSiteUrl) ? configuredSiteUrl : ""
+  url: configuredSiteUrl && /^https?:\/\//.test(configuredSiteUrl) ? configuredSiteUrl : defaultSiteUrl
 };
 
 export const publicNav = [
