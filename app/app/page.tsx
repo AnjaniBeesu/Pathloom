@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, Circle, Flame, GitBranch, Target, TrendingUp } from "lucide-react";
+import { ArrowRight, CheckCircle2, Circle, Flame, GitBranch, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = { title: "Dashboard", robots: { index: false, follow: false } };
@@ -8,11 +8,12 @@ const focus = [
   { title: "System design basics", detail: "HTTP, caching, databases", progress: 34 },
   { title: "Ship project evidence", detail: "Invoice AI Agent · deployed", progress: 86 }
 ];
-const week = [
-  ["Solve 4 graph problems", "DSA", true],
-  ["Write a one-page system design", "CS foundations", false],
-  ["Add metrics to a shipped project", "Proof of work", false],
-  ["Do one 30-minute mock interview", "Interview", false]
+
+const week: Array<{ title: string; tag: string; done: boolean }> = [
+  { title: "Solve 4 graph problems", tag: "DSA", done: true },
+  { title: "Write a one-page system design", tag: "CS foundations", done: false },
+  { title: "Add metrics to a shipped project", tag: "Proof of work", done: false },
+  { title: "Do one 30-minute mock interview", tag: "Interview", done: false }
 ];
 
 export default function AppPage() {
@@ -31,7 +32,7 @@ export default function AppPage() {
         <section className="rounded-card border border-line bg-muted-surface p-6 md:p-7"><p className="eyebrow">Next move</p><h2 className="mt-4 text-[30px] font-semibold leading-[1.05] tracking-[-.04em]">Solve one graph problem before you leave.</h2><p className="mt-4 text-sm leading-6 text-muted">You are close to unlocking the next systems node. One focused session is more useful than another roadmap tab.</p><Link href="/app/tree" className="button-primary mt-7">Continue path <ArrowRight size={16} /></Link></section>
       </div>
 
-      <section className="mt-4 rounded-card border border-line p-6 md:p-7"><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="eyebrow">This week</p><h2 className="mt-3 text-2xl font-semibold tracking-[-.03em]">A plan small enough to finish.</h2></div><span className="text-sm text-muted">4 tasks · ~4h 30m</span></div><div className="mt-7 grid gap-3 md:grid-cols-2">{week.map(([title, tag, done]) => <div key={title} className="flex items-center gap-4 rounded-2xl border border-line p-4"><div className="shrink-0">{done ? <CheckCircle2 className="text-accent" size={20} /> : <Circle className="text-quiet" size={20} />}</div><div className="min-w-0 flex-1"><p className={`font-medium ${done ? "line-through text-muted" : ""}`}>{title}</p><p className="mt-1 text-xs text-muted">{tag}</p></div></div>)}</div></section>
+      <section className="mt-4 rounded-card border border-line p-6 md:p-7"><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="eyebrow">This week</p><h2 className="mt-3 text-2xl font-semibold tracking-[-.03em]">A plan small enough to finish.</h2></div><span className="text-sm text-muted">4 tasks · ~4h 30m</span></div><div className="mt-7 grid gap-3 md:grid-cols-2">{week.map((item) => <div key={item.title} className="flex items-center gap-4 rounded-2xl border border-line p-4"><div className="shrink-0">{item.done ? <CheckCircle2 className="text-accent" size={20} /> : <Circle className="text-quiet" size={20} />}</div><div className="min-w-0 flex-1"><p className={`font-medium ${item.done ? "line-through text-muted" : ""}`}>{item.title}</p><p className="mt-1 text-xs text-muted">{item.tag}</p></div></div>)}</div></section>
 
       <div className="mt-6 flex items-center justify-between border-t border-line pt-5 text-xs text-muted"><span>Path recalculates as your evidence changes.</span><Link href="/app/settings" className="hover:text-ink">Settings</Link></div>
     </div>
