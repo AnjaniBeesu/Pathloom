@@ -1,3 +1,13 @@
+<!-- Visual identity: near-black, warm ivory, and butter yellow. -->
+
+<p align="center">
+  <img src="./assets/brand-header.svg" alt="PATHLOOM — A LIVING CAREER SKILL-TREE" width="100%" />
+</p>
+
+<p align="right"><sub><a href="https://github.com/AnjaniBeesu">ANJANI BEESU</a> &nbsp; / &nbsp; <a href="https://www.linkedin.com/in/anjanibeesu/">LINKEDIN</a> &nbsp; / &nbsp; <a href="https://portfolio-theta-olive-54.vercel.app/">PORTFOLIO</a></sub></p>
+
+---
+
 # Pathloom
 
 Pathloom is a living career skill-tree for the work between today and your next role. It is designed first for Indian B.Tech and BCA students preparing for software engineering internships and APM/PM roles, while staying useful for self-taught developers and career switchers everywhere.
